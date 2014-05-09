@@ -1,0 +1,80 @@
+public class Solution {
+    public ArrayList<ArrayList<Integer>> fourSum(int[] num, int target) {
+                ArrayList<ArrayList<Integer>> ls=new ArrayList<ArrayList<Integer>>();
+
+        int leng=num.length;
+        if(leng<4)return ls;
+        Arrays.sort(num);
+        
+        for(int i=0;i<=leng-4;i++){
+            if(i==0 || num[i]>num[i-1]){
+                
+                int left=target-num[i];
+                ArrayList<ArrayList<Integer>> q=threeSum(num,left, i+1 );
+                for(ArrayList<Integer> p:q){
+                    p.add(0, num[i]);
+                }
+                ls.addAll(q);
+            }
+        }
+        return ls;
+        
+    }
+    
+    
+    
+    
+    public ArrayList<ArrayList<Integer>> threeSum(int[] num, int target, int start) {
+        ArrayList<ArrayList<Integer>> ls=new ArrayList<ArrayList<Integer>>();
+        int l=num.length;
+        if(l<3)return ls;
+       
+        
+        for(int i=start;i<=l-3;i++){
+            if(i==start || num[i]>num[i-1]){
+                int nega=target-num[i];
+                int s=i+1;
+                int e=l-1;
+                while(s<e){
+                    if(num[s]+num[e]==nega){
+                        ArrayList<Integer> temp=new ArrayList<Integer>();
+                        temp.add(num[i]);
+                        temp.add(num[s]);
+                        temp.add(num[e]);
+                        ls.add(temp);
+                        s++;
+                        e--;
+                        while(s<e && num[s]==num[s-1]){
+                            s++;
+                        }
+                       
+                        while(e>s && num[e]==num[e+1]){
+                            e--;
+                        }
+                        
+                    }
+                    else if(num[s]+num[e]>nega){
+                        e--;
+                        while(e>s && num[e]==num[e+1]){
+                            e--;
+                        }
+                        
+                    }
+                    else{
+                        s++;
+                        while(s<e && num[s]==num[s-1]){
+                            s++;
+                        }
+                       
+                    }
+                }
+            }
+            
+            
+            
+        }
+        return ls;
+    }
+
+    
+}
