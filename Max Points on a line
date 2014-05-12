@@ -1,0 +1,58 @@
+import java.util.*;
+/**
+ * Definition for a point.
+ * class Point {
+ *     int x;
+ *     int y;
+ *     Point() { x = 0; y = 0; }
+ *     Point(int a, int b) { x = a; y = b; }
+ * }
+ */
+public class Solution {
+    public int maxPoints(Point[] points) {
+        int l=points.length;
+        
+        if(l<=2) return l;
+        int out=2;
+       
+       HashMap<Double, Integer> m=new HashMap<Double, Integer>();
+       
+       
+       for(int i=0;i<l;i++){
+           int dup=0;
+           m.clear();
+           Point a=points[i];
+           for(int j=i+1;j<l;j++){
+               Point b=points[j];
+               if(a.x==b.x && a.y==b.y){
+                   dup++;
+               }
+               else{
+                   if(a.x==b.x){
+                       if(m.keySet().contains(Double.MAX_VALUE)){
+                           m.put(Double.MAX_VALUE, m.get(Double.MAX_VALUE)+1);
+                       }
+                       else{
+                           m.put(Double.MAX_VALUE, 2);
+                       }
+                   }
+                   else{
+                       Double s=0.0+(double) (a.y-b.y)/(a.x-b.x);
+                       if(m.keySet().contains(s)){
+                           m.put(s, m.get(s)+1);
+                       }
+                       else{
+                           m.put(s,2);
+                       }
+                   }
+               }
+           }
+           if(out<dup+1)out=dup+1;
+           for(Double p:m.keySet()){
+               if(m.get(p)+dup>out)out=m.get(p)+dup;
+           }
+       }
+       
+        return out;
+    }
+}
