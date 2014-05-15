@@ -1,0 +1,90 @@
+import java.util.*;
+public class Solution { 
+    
+    public static void solve(char[][] board) {
+        int br=board.length;
+        if(br==0)return;
+        int bc=board[0].length;
+        if(bc==0)return;
+        
+        Queue<Integer> rQ=new LinkedList<Integer>();
+        Queue<Integer> cQ=new LinkedList<Integer>();
+        
+        for(int i=0;i<bc;i++){
+            if(board[0][i]=='O'){
+                rQ.add(0);
+                cQ.add(i);
+                board[0][i]='Z';
+            }
+            if(board[br-1][i]=='O'){
+                rQ.add(br-1);
+                cQ.add(i);
+                board[br-1][i]='Z';
+            }
+        }
+         for(int i=1;i<br-1;i++){
+            if(board[i][0]=='O'){
+                rQ.add(i);
+                cQ.add(0);
+                board[i][0]='Z';
+            }
+            if(board[i][bc-1]=='O'){
+                rQ.add(i);
+                cQ.add(bc-1);
+                board[i][bc-1]='Z';
+            }
+        }
+        
+        
+        while(!rQ.isEmpty()){
+            int row=rQ.poll();
+            int column=cQ.poll();
+            board[row][column]='Z';
+            if(row-1>0 && (column!=0 && column!=bc-1)){
+                          if(board[row-1][column]=='O'){
+                              rQ.add(row-1);
+                              cQ.add(column);
+                          }
+                      }
+                      if(row+1<br-1 && (column!=0 && column!=bc-1)){
+                          if(board[row+1][column]=='O'){
+                              rQ.add(row+1);
+                              cQ.add(column);
+                          }
+                      }
+                      if(column-1>0 && (row!=0 && row!=br-1)){
+                          if(board[row][column-1]=='O'){
+                              rQ.add(row);
+                              cQ.add(column-1);
+                          }
+                      }
+                      if(column+1<bc-1 && (row!=0 && row!=br-1)){
+                          if(board[row][column+1]=='O'){
+                              rQ.add(row);
+                              cQ.add(column+1);
+                          }
+                      }
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        for(int i=0;i<br;i++){
+            for(int j=0;j<bc;j++){
+                if(board[i][j]=='Z')board[i][j]='O';
+                else if(board[i][j]=='O')board[i][j]='X';
+            }
+        }
+        
+        
+        
+        }
+    
+    
+    
+    }
