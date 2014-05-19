@@ -1,0 +1,54 @@
+public class Solution {
+    public int maximalRectangle(char[][] matrix) {
+        int r=matrix.length;
+        if(r==0)return 0;
+        int c=matrix[0].length;
+        if(c==0) return 0;
+        
+        
+        int[][] p=helper(matrix);
+        int out=0;
+        
+        for(int i=0;i<r;i++){
+            int j=0;
+            Stack<Integer> stack=new Stack<Integer>();
+            while(j<c){
+                if(stack.isEmpty() || (p[i][j]>=p[i][stack.peek()])){
+                    stack.add(j);
+                    j++;
+                }
+                else{
+                    int height=p[i][stack.pop()];
+                    int width=stack.isEmpty()?j:j-stack.peek()-1;
+                    out=Math.max(out, height*width);
+                }
+            }
+            
+            while(!stack.isEmpty()){
+                int height=p[i][stack.pop()];
+                int width=stack.isEmpty()?j:j-stack.peek()-1;
+                out=Math.max(out, height*width);
+            }
+        }
+        return out;
+    }
+    
+    public static int[][] helper(char[][] matrix){
+        int r=matrix.length;
+        int c=matrix[0].length;
+        int[][] q=new int[r][c];
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(i==0)q[i][j]=matrix[i][j]-'0';
+                else{
+                    if(matrix[i][j]=='0')q[i][j]=0;
+                    else{
+                        q[i][j]=1+q[i-1][j];
+                    }
+                }
+            }
+        }
+        return q;
+    }
+    
+}
