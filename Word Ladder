@@ -1,0 +1,43 @@
+public class Solution {
+    public int ladderLength(String start, String end, HashSet<String> dict) {
+        if(dict.size()==0 || start.length()==0 || end.length()==0)return 0;
+        Queue<String> wordQ=new LinkedList<String>();
+        Queue<Integer> distQ=new LinkedList<Integer>();
+        
+        wordQ.add(start);
+        distQ.add(1);
+       
+        
+        while(!wordQ.isEmpty()){
+            String curr=wordQ.poll();
+            
+            int cDist=distQ.poll();
+            
+            for(int i=0;i<curr.length();i++){
+                for(char c='a';c<='z';c++){
+                    char[] t=curr.toCharArray();
+                    if(c==t[i])continue;
+                
+                else{
+                    t[i]=c;
+                    String temp=new String(t);
+                    
+                    if(temp.equals(end)){
+                        
+                        return cDist+1;
+                    }
+                    
+                    if(dict.contains(temp)){
+                    wordQ.add(temp);
+                    distQ.add(cDist+1);
+                        dict.remove(temp);
+                    }
+                }
+            }
+            
+        }
+        }
+        return 0;
+        
+    }
+}
