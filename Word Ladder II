@@ -1,0 +1,88 @@
+import java.util.*;
+public class Solution {
+    
+    HashMap<String, Integer> map=new HashMap<String, Integer>();
+    
+    public void bfs(String start, String end, HashSet<String> dict){
+        map.put(start, 0);
+        if(start.equals(end) || dict.size()==0)return;
+        Queue<String> q=new LinkedList<String>();
+        
+        q.add(start);
+        
+        while(!q.isEmpty()){
+            String current=q.poll();
+            
+            if(current==end)continue;
+            for(int i=0;i<current.length();i++){
+                char[] curChar=current.toCharArray();
+                for(char c='a';c<='z';c++){
+                    if(curChar[i]==c)continue;
+                    else{
+                        curChar[i]=c;
+                        String newS=new String(curChar);
+                        
+                        if(dict.contains(newS) || newS.equals(end)){
+                            if(map.get(newS)==null){map.put(newS, map.get(current)+1);
+                                q.add(newS);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        
+        
+    }
+    
+    
+    public void dfs(String start, String end, HashSet<String> dict, ArrayList<String> path, ArrayList<ArrayList<String>> result){
+        if(start.equals(end)){
+            path.add(end);
+            Collections.reverse(path);
+            result.add(path);
+            return;
+        }
+        if(map.get(start)==null){
+            return;
+        }
+        path.add(start);
+        for(int i=0;i<start.length();i++){
+            char[] t=start.toCharArray();
+            for(char c='a';c<='z';c++){
+                if(t[i]==c)continue;
+                else{
+                    t[i]=c;
+                    String newS=new String(t);
+                    if(map.get(newS)!=null){
+                        if(map.get(newS)+1==map.get(start)){
+                           ArrayList<String> newPath=new ArrayList<String>(path);
+                             dfs(newS, end, dict, newPath, result);
+                        }
+                    }
+                   
+                }
+            }
+        }
+        
+    }
+    
+    
+    public ArrayList<ArrayList<String>> findLadders(String start, String end, HashSet<String> dict) {
+        
+      
+        ArrayList<String> path=new ArrayList<String>();
+        ArrayList<ArrayList<String>> result=new ArrayList<ArrayList<String>>();
+        if(start.length()==0 || end.length()==0 || dict.size()==0 || start.length()!=end.length())return result;
+         bfs(start, end, dict);
+        dfs(end, start, dict, path, result);
+        return result;
+       
+        
+    }
+    
+    
+    
+    
+}
