@@ -1,0 +1,67 @@
+public class Solution {
+    public ArrayList<String> wordBreak(String s, Set<String> dict) {
+        ArrayList<String> l=new ArrayList<String>();
+        if(s.length()==0 || dict.size()==0)return l;
+        
+        boolean[][] m=new boolean[s.length()][s.length()+1];
+        
+        for(int i=1;i<=s.length();i++){
+            for(int j=0;j<s.length();j++){
+                if(j+i<=s.length()){
+                    if(dict.contains(s.substring(j,j+i))){
+                        m[j][i]=true;
+                    }
+                    else{
+                        for(int k=1;k<=i;k++){
+                            if(m[j][k] && m[j+k][i-k]){
+                                m[j][i]=true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        if(!m[0][s.length()])return l;
+        StringBuilder sb=new StringBuilder();
+        dfs(s,sb,dict,l,m,0);
+        return l;
+    }
+    
+    
+    public void dfs(String s, StringBuilder sb, Set<String> dict, ArrayList<String> l, boolean[][] m, int start){
+        
+        for(int i=1;i<=s.length();i++){
+           
+           if(s.length()-start>=i){
+            if(dict.contains(s.substring(start,start+i))){
+                
+                if(i==s.length()-start){
+                    
+                    sb.append(s.substring(start,start+i));
+                    
+                    l.add(sb.toString());
+                    sb.delete(sb.length()-i,sb.length());
+                    return;
+                }
+                else{
+                    if(m[start+i][s.length()-start-i]){
+                    
+                    
+                    sb.append(s.substring(start,start+i));
+                    sb.append(" ");
+                    dfs(s,sb,dict,l,m,start+i);
+                        sb.delete(sb.length()-i-1,sb.length());
+                    }
+                }
+            }
+        
+        }
+        }
+        return;
+    }
+    
+    
+    
+}
