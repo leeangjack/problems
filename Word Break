@@ -1,0 +1,28 @@
+public class Solution {
+    public boolean wordBreak(String s, Set<String> dict) {
+        if(s.length()==0)return true;
+        if(dict.size()==0)return false;
+        
+        
+        boolean[][] m=new boolean[s.length()][s.length()+1];
+        
+        for(int i=1;i<=s.length();i++){
+            for(int j=0;j<s.length();j++){
+                if(j+i<=s.length()){
+                    if(dict.contains(s.substring(j,j+i))){
+                        m[j][i]=true;
+                    }
+                    else{
+                        for(int k=1;k<=i;k++){
+                            if(m[j][k] && m[j+k][i-k]){
+                                m[j][i]=true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return m[0][s.length()];
+    }
+}
