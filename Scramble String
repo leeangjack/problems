@@ -1,0 +1,52 @@
+public class Solution {
+    public boolean isScramble(String s1, String s2) {
+        
+     
+        
+        int l1=s1.length();
+        int l2=s1.length();
+        
+        if(l1!=l2)return false;
+        if(l1==0){
+            return l2==0;
+        }
+        
+        if(s1.equals(s2))return true;
+        int v1=0;
+        int v2=0;
+        
+        
+        //check if s1 and s2 have the same character, can also use sort and compare
+        for(int i=0;i<l1;i++){
+            v1+=s1.charAt(i)-'0';
+            v2+=s2.charAt(i)-'0';
+        }
+        
+        
+        
+        if(v1!=v2)return false;
+        
+        
+        for(int i=1;i<l1;i++){
+            String s1Left=s1.substring(0,i);
+            String s1Right=s1.substring(i);
+            
+            String s2Left=s2.substring(0,i);
+            String s2Right=s2.substring(i);
+            
+            if(isScramble(s1Left, s2Left) && isScramble(s1Right, s2Right)) return true;
+            
+            
+            s2Left=s2.substring(0,l1-i);
+            s2Right=s2.substring(l1-i);
+            
+            if(isScramble(s1Left, s2Right) && isScramble(s1Right, s2Left)) return true;
+            
+        }
+        
+     return false;   
+    } 
+    
+    
+    
+}
