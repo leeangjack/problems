@@ -1,0 +1,40 @@
+
+public class Solution {
+    public List<String> anagrams(String[] strs) {
+    ArrayList<String> l=new ArrayList<String>();
+    if(strs.length==0)return l;
+    
+    
+    HashMap<String, ArrayList<String>> map=new HashMap<String, ArrayList<String>>();
+
+    for(int i=0;i<strs.length;i++){
+        String t=strs[i];
+        char[] c=t.toCharArray();
+        Arrays.sort(c);
+        String t1=new String(c);
+        if(map.get(t1)==null){
+            ArrayList<String> l1=new ArrayList<String>();
+            l1.add(t);
+            map.put(t1,l1);
+        }
+        else{
+
+           ArrayList<String> l2=map.get(t1);
+           l2.add(t);
+           map.put(t1,l2);
+        }
+    }
+    
+    
+    for(ArrayList<String> l3: map.values()){
+        if(l3.size()>1){
+            l.addAll(l3);
+        }
+    }
+    
+    
+    
+    return l;
+    
+    }
+}
