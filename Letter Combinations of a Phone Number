@@ -1,0 +1,73 @@
+public class Solution {
+    public List<String> letterCombinations(String digits) {
+        List<String> l=new ArrayList<String>();
+        if(digits.length()==0){
+            l.add("");
+            return l;}
+        
+       
+       //build phone pad
+        ArrayList<ArrayList<String>> pad=new ArrayList<ArrayList<String>>();
+        ArrayList<String> l1=new ArrayList<String>();
+        pad.add(l1);
+        ArrayList<String> l2=new ArrayList<String>();
+        pad.add(l2);
+        for(int i=0;i<5;i++){
+            ArrayList<String> tl=new ArrayList<String>();
+            for(int j=0;j<3;j++){
+            String t=Character.toString((char)('a'+i*3+j));
+            tl.add(t);
+            }
+            pad.add(tl);
+        }
+        
+        ArrayList<String> l7=new ArrayList<String>();
+        l7.add("p");
+        l7.add("q");
+        l7.add("r");
+        l7.add("s");
+        pad.add(l7);
+          ArrayList<String> l8=new ArrayList<String>();
+        l8.add("t");
+        l8.add("u");
+        l8.add("v");
+        pad.add(l8);
+          ArrayList<String> l9=new ArrayList<String>();
+        l9.add("w");
+        l9.add("x");
+        l9.add("y");
+        l9.add("z");
+        pad.add(l9);
+        
+        String path="";
+    helper(digits,l,pad,path);
+    
+    return l;
+        
+        
+        
+    }
+    
+    
+   //backtracking
+    public void helper(String s, List<String> l, ArrayList<ArrayList<String>> ll, String path){
+        if(s.length()==0) {
+           l.add(path);
+        
+        return;}
+        
+        
+           
+            int t=Integer.parseInt(""+s.charAt(0));
+            ArrayList<String> tl=ll.get(t);
+            for(int j=0;j<tl.size();j++){
+                path+=tl.get(j);
+                helper(s.substring(1),l,ll,path);
+                path=path.substring(0,path.length()-1);
+            }
+        
+        return;
+    }
+    
+    
+}
