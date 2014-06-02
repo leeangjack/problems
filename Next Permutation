@@ -1,0 +1,70 @@
+public class Solution {
+    public void nextPermutation(int[] num) {
+        if(num.length==0)return;
+        //find the last place where a increase occurs
+        
+        int a=0;
+        int b=0;
+        
+        for(int i=num.length-1;i>=1;i--){
+            if(num[i]>num[i-1]){
+                b=i;
+                a=i-1;
+                break;
+            }
+        }
+        
+        if(a==0 && b==0){
+            Arrays.sort(num);
+            return;
+        }
+        
+        
+        
+        //find the minimum number that is greater than the last place a increase
+        int temp=Integer.MAX_VALUE;
+        int pos=0;
+        for(int i=num.length-1;i>=b;i--){
+            if(num[i]<temp && num[i]>num[a]){temp=num[i];
+            
+                pos=i;
+            }
+        }
+        
+        
+        
+        
+        
+        swap(num, pos, a);
+        
+        
+       
+       //make the rest of latter array in ascending order
+        for(int i=b;i<num.length;i++){
+            for(int j=i+1;j<num.length;j++){
+                if(num[i]>num[j]){
+                    swap(num, i, j);
+                }
+            }
+        }
+        
+        
+        
+        
+        
+       //Arrays.sort(num, b,num.length);
+       
+       
+        return;
+        
+        
+    }
+    
+    public void swap(int[] num, int a, int b){
+        int t=num[a];
+        num[a]=num[b];
+        num[b]=t;
+    }
+    
+    
+}
