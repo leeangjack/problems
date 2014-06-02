@@ -1,0 +1,59 @@
+import java.util.*;
+public class Solution {
+    public List<List<String>> partition(String s) {
+        
+    List<List<String>> l=new ArrayList<List<String>>();
+    if(s.length()==0)return l;
+    
+    
+    boolean[][] p=new boolean[s.length()][s.length()+1];
+    
+    //dp for check each substirng if they are palindromic
+    
+    for(int i=0;i<s.length();i++){
+        
+        p[i][0]=true;
+        p[i][1]=true;
+    }
+        
+        for(int i=2;i<=s.length();i++){
+            for(int j=0;j<s.length();j++){
+                if(i+j<=s.length()){
+                    if(s.charAt(j)==s.charAt(j+i-1) && p[j+1][i-2])p[j][i]=true;
+                    else p[j][i]=false;
+                }
+            }
+        }
+        List<String> ls=new ArrayList<String>();
+        helper(l,0,ls,s,p);
+        return l;
+        
+    }
+    
+    
+    public void helper(List<List<String>> ll, int start, List<String> l, String s, boolean[][] p){
+        if(start==s.length()){
+            
+            List<String> l1=new ArrayList<String>(l);
+            ll.add(l1);
+        
+            return;
+        }
+        
+        
+        //recursive backtracking
+        for(int i=1;i<=s.length()-start; i++){
+            if(p[start][i]==true){
+                l.add(s.substring(start, start+i));
+                helper(ll, start+i,l,s,p);
+                l.remove(l.size()-1);
+            }
+        }
+        
+        return;
+    }
+    
+    
+    
+    
+}
