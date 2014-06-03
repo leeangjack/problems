@@ -1,0 +1,99 @@
+public class Solution {
+    public int minCut(String s) {
+        
+        
+    List<List<String>> l=new ArrayList<List<String>>();
+    if(s.length()==0)return 0;
+    
+    
+    int ret=0;
+    
+    boolean[][] p=new boolean[s.length()][s.length()+1];
+    
+    //dp for check each substirng if they are palindromic
+    
+    for(int i=0;i<s.length();i++){
+        
+        p[i][0]=true;
+        p[i][1]=true;
+    }
+        
+        for(int i=2;i<=s.length();i++){
+            for(int j=0;j<s.length();j++){
+                if(i+j<=s.length()){
+                    if(s.charAt(j)==s.charAt(j+i-1) && p[j+1][i-2])p[j][i]=true;
+                    else p[j][i]=false;
+                }
+            }
+        }
+        
+        
+        
+        
+        //bfs to search the min cut
+        //use a hashset to void repeat visit of levels
+        HashSet<Integer> visit=new HashSet<Integer>();
+        Queue<Integer> qToAdd=new LinkedList<Integer>();
+        Queue<Integer> qToPop=new LinkedList<Integer>();
+        
+        for(int i=s.length();i>=1;i--){
+            if(p[0][i]==true){
+                qToAdd.add(i);
+            }
+        }
+        
+        
+        
+        
+        while(!qToAdd.isEmpty() || !qToPop.isEmpty() ){
+            if(qToPop.isEmpty()){
+                Queue<Integer> tQ=new LinkedList<Integer>(qToAdd);
+                qToAdd=qToPop;
+                qToPop=tQ;
+            }
+            
+            
+            
+            
+            while(!qToPop.isEmpty()){
+                int ti=qToPop.poll();
+                
+                
+                
+                
+                
+                if(ti>=s.length()){
+                    return ret;
+                }
+                
+                
+                if(visit.contains(ti))continue;
+                
+                visit.add(ti);
+                
+                for(int i=s.length()-ti;i>=1;i--){
+                if(p[ti][i]==true){
+                    qToAdd.add(ti+i);
+                }
+            }
+            }
+            
+            ret++;
+            
+          
+        }
+        
+        
+        
+    
+        
+        
+        return ret;
+    
+    }
+    
+  
+
+
+
+}
