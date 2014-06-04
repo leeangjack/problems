@@ -1,0 +1,62 @@
+public class Solution {
+    public String minWindow(String S, String T) {
+        if(S.length()==0 || T.length()==0)return "";
+        
+        //Two arrays to keep track of characters for S and T
+        int[] needTo=new int[256];
+        int[] haveNow=new int[256];
+        
+        for(int i=0;i<T.length();i++){
+            needTo[T.charAt(i)]++;
+        }
+        
+        
+        int count=0;
+        int start=0;
+        int end=0;
+        int minLength=Integer.MAX_VALUE;
+        
+        String out="";
+        
+        
+        //Use two pointers start and end to keep track of substring candidates
+        for(;end<S.length();end++){
+            //if not present in T string, continue
+            if(needTo[S.charAt(end)]==0)continue;
+            
+            //keep track of the current count of characters in T
+            haveNow[S.charAt(end)]++;
+            
+            //Only increament if necessary
+            if(needTo[S.charAt(end)]>=haveNow[S.charAt(end)]){
+                count++;
+            }
+            
+            if(count==T.length()){
+                //if the start position is not present in T or the start Position has a character in excess
+                //shrink the window
+                while(needTo[S.charAt(start)]==0 || haveNow[S.charAt(start)]>needTo[S.charAt(start)]){
+                    if(haveNow[S.charAt(start)]>needTo[S.charAt(start)]){
+                        haveNow[S.charAt(start)]--;
+                    }
+                    start++;
+                }
+                if(end-start+1<minLength){
+                    minLength=end-start+1;
+                    out=S.substring(start, end+1);
+                }
+                //move the start position, reduce count and the current count of the first character
+                count--;
+               haveNow[S.charAt(start)]--;
+                start++;
+                
+            }
+            
+            
+        }
+        
+        return out;
+        
+        
+    }
+}
