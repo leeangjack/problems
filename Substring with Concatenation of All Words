@@ -1,0 +1,58 @@
+public class Solution {
+    public List<Integer> findSubstring(String S, String[] L) {
+        List<Integer> list=new ArrayList<Integer>();
+        if(S.length()==0 || L.length==0)return list;
+        
+        //HashMap for duplicate strings in L
+        HashMap<String, Integer> map=new HashMap<String, Integer>();
+        for(int i=0;i<L.length;i++){
+           if(!map.containsKey(L[i])){
+               map.put(L[i],1);
+           }
+           else{
+               
+               map.put(L[i],map.get(L[i])+1);
+           }
+        }
+        
+        
+        int start=0;
+        int subLength=L.length*L[0].length();
+        
+        //start from the beginning using brute force method, check every possible location
+        while(start<=S.length()-subLength){
+            HashMap<String, Integer> tMap=new HashMap<String, Integer>(map);
+            boolean possible=true;
+            for(int i=start;i<=(start+L[0].length()*(L.length-1));i+=L[0].length()){
+                if(tMap.containsKey(S.substring(i,i+L[0].length()))){
+                    int t1=tMap.get(S.substring(i,i+L[0].length()));
+                    
+                    
+                    if(t1>1){
+                        tMap.put(S.substring(i,i+L[0].length()),t1-1);
+                    }
+                    else{
+                        tMap.remove(S.substring(i,i+L[0].length()));
+                    }
+                    
+                    
+                }
+                else{
+                    possible=false;
+                    break;
+                }
+                
+            }
+            if(possible==false){
+                start++;
+                continue;
+            }
+            
+            list.add(start);
+            start+=L[0].length();
+        }
+       
+        return list;
+        
+    }
+}
