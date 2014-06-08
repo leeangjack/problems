@@ -1,0 +1,107 @@
+/**
+ * Definition for an interval.
+ * public class Interval {
+ *     int start;
+ *     int end;
+ *     Interval() { start = 0; end = 0; }
+ *     Interval(int s, int e) { start = s; end = e; }
+ * }
+ */
+public class Solution {
+    public List<Interval> insert(List<Interval> intervals, Interval newInterval) {
+        
+        
+         List<Interval> l=new ArrayList<Interval>();
+         Interval t=newInterval;
+         for(int i=0;i<intervals.size();i++){
+             Interval temp=intervals.get(i);
+             //if the current interval is before new interval, add current
+             if(temp.end<t.start)l.add(temp);
+             //if the current interval is after, add new interval and change the pointer
+             else if(temp.start>t.end){
+                 l.add(t);
+                 t=temp;
+             }
+             //else, create merged interval, change the pointer;
+             else{
+                 int min=Math.min(t.start, temp.start);
+                 int max=Math.max(t.end, temp.end);
+                 t=new Interval(min, max);
+             }
+         }
+         
+         l.add(t);
+         return l;
+         
+         
+        
+       /* if(intervals.size()==0){
+            intervals.add(newInterval);
+            return intervals;
+        }
+        if(newInterval==null)return intervals;
+        
+       int t=-1;
+        boolean addedNew=false;
+        List<Interval> l=new ArrayList<Interval>();
+        
+        for(int i=0;i<intervals.size();i++){
+            Interval val=intervals.get(i);
+            if(!discon(val, newInterval)){
+                merge(newInterval, val);
+               
+            }
+            else{
+                
+                if(newInterval.start>val.end){
+                    l.add(val);
+                    
+                }
+                else{
+                    l.add(newInterval);
+                    addedNew=true;
+                    t=i;
+                    break;
+                }
+                
+            }
+        }
+        
+        if(t!=-1){
+            for(int i=t;i<intervals.size();i++){
+                l.add(intervals.get(i));
+            }
+        }
+        
+        
+        
+        if(!addedNew){
+            l.add(newInterval);
+        }
+        
+        return l;*/
+    }
+    
+    
+   /* public void merge(Interval a, Interval b){
+       
+        if(a.end>=b.start && a.end<=b.end){
+            a.end=b.end;
+            
+            if(a.start>b.start)a.start=b.start;
+            return;
+        }
+        
+        if(a.start>b.start)a.start=b.start;
+        
+        return;
+        
+        
+    }
+    
+    public boolean discon(Interval a, Interval b){
+        if(a.end<b.start || a.start>b.end)return true;
+        
+        return false;
+    } */
+}
