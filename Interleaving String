@@ -1,0 +1,48 @@
+public class Solution {
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int l1=s1.length();
+        int l2=s2.length();
+        int l3=s3.length();
+        
+        if(l1+l2!=l3)return false;
+       //dp, use t[i][j] is the sub problem of s3 of length i+j interleaved by s1 of length i and s2 of length j. 
+       
+        boolean[][] t=new boolean[l1+1][l2+1];
+        
+        for(int i=0;i<=l1;i++){
+            for(int j=0;j<=l2;j++){
+                
+                if(i==0 && j==0)t[i][j]=true;
+                else{
+                    
+                    //first row
+                    if(i==0){
+                        if(t[i][j-1] && s2.charAt(j-1)==s3.charAt(j-1))t[i][j]=true;
+                        
+                    }
+                    //first column
+                    else if(j==0){
+                        if(t[i-1][j] && s1.charAt(i-1)==s3.charAt(i-1))t[i][j]=true;
+                    }
+                    
+                    else{
+                        //at least one of the last characters of s1 and s2 matches the last character of s3 and the previous sub problem is true
+                        if((t[i-1][j] && s1.charAt(i-1)==s3.charAt(j+i-1)) || (t[i][j-1] && s2.charAt(j-1)==s3.charAt(i+j-1))){
+                            t[i][j]=true;
+                        }
+                        else{t[i][j]=false;}
+                    }
+                        
+                    }
+                    
+                    
+                    
+                }
+                
+            }
+            return t[l1][l2];
+        }
+        
+        
+        
+    }
