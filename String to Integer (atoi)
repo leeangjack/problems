@@ -1,0 +1,102 @@
+public class Solution {
+    public int atoi(String str) {
+        int ret=0;
+        boolean pos=false;
+        boolean neg=false;
+        int firstNonS=-1;
+        int start=0;
+        
+        for(int i=0;i<str.length();i++){
+            if(str.charAt(i)!=' '){
+                firstNonS=i;
+                break;
+            }
+        }
+        
+        if(firstNonS==-1)return ret;
+        
+        //check if has positive or negative sign
+        if(str.charAt(firstNonS)=='-'){neg=true;
+            start=firstNonS+1;
+        }
+        else{
+            pos=true;
+            if(str.charAt(firstNonS)=='+')start=firstNonS+1;
+            else{
+                start=firstNonS;
+            }
+        }
+        
+        //loop to find the first numerical segment
+        for(int i=start;i<str.length();i++){
+            //if not a numerical character break
+            if(!(str.charAt(i)-'0'>=0 && str.charAt(i)-'0'<=9))break;
+            
+            else{
+                //if has more than 10 numerical characters, return limits
+                if(i==start+10){
+                    if(neg)return Integer.MIN_VALUE;
+                    return Integer.MAX_VALUE;
+                }
+                if(neg){
+                    //check for overflow
+                    if(ret>0 || ret<Integer.MIN_VALUE/10 || ret*10-(str.charAt(i)-'0')>0)return Integer.MIN_VALUE;
+                    
+                    ret=ret*10-(str.charAt(i)-'0');
+                                        
+
+                    
+                }
+                else{
+                    //check for overflow
+                    if(ret<0 || ret>Integer.MAX_VALUE/10 || ret*10+(str.charAt(i)-'0')<0)return Integer.MAX_VALUE;
+                    ret=ret*10+(str.charAt(i)-'0');
+                                       
+
+                    
+                }
+            }
+            
+        }
+
+        return ret;
+    }
+}
+
+/*
+public static int atoi(String str){  
+        if(str == null || str.length()==0){  
+            return 0;  
+        }  
+        int pos = 0, ret = 0;  
+        long val = 0L;  
+        char flag = '+';  
+          
+        str = str.trim();       // 过滤掉前面的whitespace  
+        if(str.charAt(0)=='+' || str.charAt(0)=='-'){       // 获得符号  
+            pos++;  
+            flag = str.charAt(0);  
+        }  
+          
+        while(pos<str.length() && Character.isDigit(str.charAt(pos))){  
+            val = val*10 + (str.charAt(pos)-'0');   // 累积和  
+            pos++;  
+        }  
+          
+        if(flag == '-'){        // 负号处理  
+            val = -val;  
+        }  
+          
+        if(val > Integer.MAX_VALUE){  
+            ret = Integer.MAX_VALUE;  
+        }else if(val < Integer.MIN_VALUE){  
+            ret = Integer.MIN_VALUE;  
+        }else{  
+            ret = (int)val;  
+        }  
+        return ret;  
+    }  
+
+*/
+
+
