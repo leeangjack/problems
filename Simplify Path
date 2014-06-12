@@ -1,0 +1,48 @@
+public class Solution {
+    public String simplifyPath(String path) {
+        //use a linkedlist as a stack first and then as a queue;
+        LinkedList<String> s=new LinkedList<String>();
+        StringBuilder sb=new StringBuilder();
+        if(path.length()<=1)return "/";
+        for(int i=1;i<path.length();i++){
+            if(path.charAt(i)!='/')sb.append(path.charAt(i));
+            else{
+                String t=sb.toString();
+                //if".." pop the previous string, start a new sb
+                if(t.equals("..")){s.pollLast();
+                sb=new StringBuilder();}
+                //if "."continue with a new sb
+                else if(t.equals(".")){
+                    sb=new StringBuilder();
+                    continue;
+                }
+                else{
+                    //add to stack a non-empty sb
+                    if(sb.length()>0)s.offer(t);
+                    sb=new StringBuilder();
+                }
+            }
+            
+        }
+        
+        //if sb still has string, add to stack or pop
+        if(sb.length()>0){
+            String t=sb.toString();
+            if(t.equals(".."))s.pollLast();
+            else if(!t.equals("."))s.offer(sb.toString());}
+            
+        StringBuilder ret=new StringBuilder();
+        
+        
+        if(s.isEmpty())ret.append("/");
+        //treat s as a queue
+        while(!s.isEmpty()){
+            ret.append("/");
+            ret.append(s.pollFirst());
+            
+        }
+        
+        
+        return ret.toString();
+    }
+}
