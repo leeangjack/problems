@@ -1,0 +1,90 @@
+public class Solution {
+    public List<String> fullJustify(String[] words, int L) {
+        List<String> l=new ArrayList<String>();
+        if(words.length==0){
+            return l;
+        }
+        
+        return helper(l,0,L, words);
+        
+        
+    }
+    
+    //add string line by line
+    public List<String> helper(List<String> list, int pos, int limit, String[] words){
+        
+        //start position to add string
+        int start=pos;
+        if(pos>=words.length)return list;
+        //add at least one word
+        int wordCount=words[pos].length();
+        //wordLength is the length of words only, no spaces
+        int wordLength=wordCount;
+        StringBuilder sb=new StringBuilder();
+        sb.append(words[pos]);
+        //pos is the position of next word to be added
+        pos++;
+        while(pos<words.length && wordCount<limit){
+            //if the word length with space is over limit break
+            if(wordCount+1+words[pos].length()>limit)break;
+            else{
+                wordCount=wordCount+1+words[pos].length();
+                wordLength+=words[pos].length();
+                pos++;
+            }
+        }
+    
+   //calculate the length of white space
+    int whiteLength=limit-wordLength;
+    start++;
+    
+    //if there is only one word, add all the space to the right
+     if(pos==start){
+        for(int i=0;i<whiteLength;i++){
+            sb.append(" ");
+        }
+    }
+    else{
+        
+        //if this is the last line, add one space in each word and the rest of the space at the end
+        if(pos==words.length){
+              for(int i=(pos-start);i>=1;i--){
+        
+       
+            sb.append(" ");
+            whiteLength--;
+        
+        sb.append(words[start]);
+        start++;
+    } 
+        
+            for(int i=0;i<whiteLength;i++){
+                sb.append(" ");
+            }
+            
+            
+        }
+        
+        else{
+        //if this is a normal line, add space using the ceiling function
+        for(int i=(pos-start);i>=1;i--){
+        
+        int wt=(int) Math.ceil((double)whiteLength/i);
+        whiteLength-=wt;
+        for(int j=0;j<wt;j++){
+            sb.append(" ");
+        }
+        sb.append(words[start]);
+        start++;
+    }
+        }
+    }
+    
+    list.add(sb.toString());
+     
+     
+     return helper(list, pos, limit, words);
+    
+    
+    }
+}
