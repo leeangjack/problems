@@ -1,0 +1,132 @@
+public class Solution {
+    //my solution, there is a better solution at the bottom
+    public String multiply(String num1, String num2) {
+        if(num1.length()==0 || num2.length()==0)return "0";
+        if(num1.equals("0") || num2.equals("0"))return "0";
+        
+        if(num2.length()==1){
+            return helper(num1, num2);
+        }
+        if(num1.length()==1){
+            return helper(num2, num1);
+        }
+        
+        String a1=num1.substring(num1.length()-1);
+        String a2=num1.substring(0,num1.length()-1);
+        String b1=num2.substring(num2.length()-1);
+        String b2=num2.substring(0,num2.length()-1);
+        
+        
+        String t1=helper(a1, b1);
+        String t2=helper(a2, b1);
+        String t3=helper(b2, a1);
+        String t4=multiply(a2, b2);
+        t4=t4+"00";
+        t2=t2+"0";
+        t3=t3+"0";
+        return add(t1,t2,t3,t4);
+        
+    }
+    // helper method assumes s2 is only one digit
+    public String helper(String s1, String s2){
+        int carry=0;
+        int t2=s2.charAt(0)-'0';
+        StringBuilder sb=new StringBuilder();
+        for(int i=s1.length()-1;i>=0;i--){
+            int t=s1.charAt(i)-'0';
+            t=t*t2+carry;
+            if(t>9){
+                sb.append(t%10);
+                carry=t/10;
+            }
+            else{
+                sb.append(t);
+                carry=0;
+            }
+        }
+        if(carry>0)sb.append(carry);
+        return sb.reverse().toString();
+    }
+   //add the four strings 
+    public String add(String s1, String s2, String s3, String s4){
+        StringBuilder sb=new StringBuilder();
+        int carry=0;
+        int m=Math.max(s1.length(), Math.max(s2.length(), Math.max(s3.length(), s4.length())));
+        for(int i=1;i<=m;i++){
+            int t1=0;
+            if(s1.length()-i>=0){
+                t1=s1.charAt(s1.length()-i)-'0';
+            }
+            int t2=0;
+            if(s2.length()-i>=0){
+                t2=s2.charAt(s2.length()-i)-'0';
+            }
+            int t3=0;
+            if(s3.length()-i>=0){
+                t3=s3.charAt(s3.length()-i)-'0';
+            }
+            int t4=0;
+            if(s4.length()-i>=0){
+                t4=s4.charAt(s4.length()-i)-'0';
+            }
+            int t=t1+t2+t3+t4+carry;
+            if(t>9){
+                sb.append(t%10);
+                carry=t/10;
+            }
+            else{
+                sb.append(t);
+                carry=0;
+            }
+            
+        }
+         if(carry>0)sb.append(carry);
+        return sb.reverse().toString();
+    }
+    
+    
+    /*
+    
+    public static String multiply(String num1, String num2) {  
+        // 先把string翻转  
+        String n1 = new StringBuilder(num1).reverse().toString();  
+        String n2 = new StringBuilder(num2).reverse().toString();  
+          
+        int[] d = new int[n1.length()+n2.length()];     // 构建数组存放乘积  
+        for(int i=0; i<n1.length(); i++){  
+            for(int j=0; j<n2.length(); j++){  
+                d[i+j] += (n1.charAt(i)-'0') * (n2.charAt(j)-'0');      // 在正确位置累加乘积  
+            }  
+        }  
+          
+        StringBuilder sb = new StringBuilder();  
+        for(int i=0; i<d.length; i++){  
+            int digit = d[i]%10;        // 当前位  
+            int carry = d[i]/10;        // 进位  
+            if(i+1<d.length){  
+                d[i+1] += carry;  
+            }  
+            sb.insert(0, digit);        // prepend  
+        }  
+          
+        // 移除前导零  
+        while(sb.charAt(0)=='0' && sb.length()>1){  
+            sb.deleteCharAt(0);  
+        }  
+        return sb.toString();  
+    }  
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    */
+    
+    
+    
+}
