@@ -1,0 +1,39 @@
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int ret=0;
+        int maxLength=0;
+        
+        if(s.length()==0)return ret;
+        //record possition of last occured such character
+        HashMap<Character, Integer> map=new HashMap<Character, Integer>();
+        int start=0;
+        int end=0;
+       
+        for(int i=0;i<s.length();i++){
+            //if not occured, put into map
+            if(!map.containsKey(s.charAt(i))){
+                end=i;
+                map.put(s.charAt(i), i);
+                
+                if(maxLength<(end-start+1))maxLength=end-start+1;
+            }
+            else{
+                int temp=map.get(s.charAt(i));
+               //if occured after the start pointer, change the start pointer to one position after the occurence
+               if(temp>=start){start=temp+1;
+               end=i;
+                   map.put(s.charAt(i),i);
+               }
+               else{
+                   //if occurred before the start pointer, ignore
+                   end=i;
+                   map.put(s.charAt(i),i);
+               }
+                
+                if(maxLength<(end-start+1))maxLength=end-start+1;
+            }
+                
+        }
+        return maxLength;
+    }
+}
