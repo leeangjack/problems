@@ -1,0 +1,98 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    /*public void reorderList(ListNode head) {
+        if(head==null || head.next==null || head.next.next==null)return;
+       
+       Stack<ListNode> s=new Stack<ListNode>();
+       Queue<ListNode> q=new LinkedList<ListNode>();
+       
+       ListNode temp=head;
+       int c=0;
+       while(temp!=null){
+        s.push(temp);
+        if(c>0)q.offer(temp);
+           c++;
+           temp=temp.next;
+           
+       }
+       ListNode temp2=head;
+       c--;
+      while(c>0){
+          temp2.next=s.pop();
+          temp2=temp2.next;
+          c--;
+          if(c<=0)break;
+          temp2.next=q.poll();
+          temp2=temp2.next;
+          c--;
+          
+      }
+       
+       temp2.next=null;
+     
+        return;
+        
+    }*/
+    public void reorderList(ListNode head) {
+        if(head==null || head.next==null || head.next.next==null)return;
+       
+     
+     //find the mid point of the linked list
+       ListNode fast=head;
+       ListNode slow=head;
+       while(fast.next!=null && fast.next.next!=null){
+           slow=slow.next;
+           fast=fast.next.next;
+       }
+     
+     //split the list into two halves
+     ListNode secondHalf=slow.next;
+     slow.next=null;
+     
+     ListNode tempNode=secondHalf;
+     ListNode tempNode2=null;
+    
+     //reverse the second half of the list
+     while(tempNode.next!=null){
+         tempNode=tempNode.next;
+         secondHalf.next=tempNode2;
+         tempNode2=secondHalf;
+         secondHalf=tempNode;
+     }
+     
+     secondHalf.next=tempNode2;
+     
+     
+     //merge the two lists, the original first half and the reversed second half
+     ListNode firstHalf=head;
+     ListNode travel=head;
+     ListNode firstAdd=firstHalf.next;
+     ListNode secondAdd=secondHalf;
+     
+     while(secondAdd!=null || firstAdd!=null){
+         travel.next=secondAdd;
+         if(secondAdd!=null)secondAdd=secondAdd.next;
+         travel=travel.next;
+         travel.next=firstAdd;
+         if(firstAdd!=null)firstAdd=firstAdd.next;
+         travel=travel.next;
+     }
+     
+     
+        return;
+        
+    }
+    
+    
+   
+}
