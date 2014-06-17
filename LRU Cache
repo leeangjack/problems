@@ -1,0 +1,58 @@
+import java.util.*;
+public class LRUCache {
+    
+   
+   
+   LinkedHashMap<Integer, Integer> map;
+   
+    int limit;
+    public LRUCache(int capacity) {
+       map=new LinkedHashMap<Integer, Integer>(capacity);
+        this.limit=capacity;
+    }
+    
+    //update the get key to the most recently used
+    public int get(int key) {
+         int t=-1;
+       
+         if(!map.containsKey(key)){
+             return -1;
+         }
+         
+         t=map.get(key);
+         map.remove(key);
+         map.put(key, t);
+         
+     
+         return t;
+         
+      
+         
+      
+        
+       
+    }
+    
+    public void set(int key, int value) {
+        if(map.containsKey(key)){
+          map.remove(key);
+            
+            map.put(key, value);
+        }
+        
+        else if(map.size()<limit){
+       
+            map.put(key, value);
+            
+           
+        }
+        else{
+            Iterator it=map.keySet().iterator();
+            if(it.hasNext()){
+                int keyTemp=(int)it.next();
+                map.remove(keyTemp);
+            }
+            map.put(key, value);
+        }
+    }
+}
