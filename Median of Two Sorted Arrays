@@ -1,0 +1,99 @@
+public class Solution {
+    //linear time complexity method
+   /*
+    public double findMedianSortedArrays(int A[], int B[]) {
+        //corner cases
+        if(A.length==0){
+            if(B.length==0)return (double)0;
+            else{
+                if(B.length%2==1){return (double)B[B.length/2];}
+                else{
+                    return (B[B.length/2]+B[B.length/2-1])/2.0;
+                }
+            }
+        }
+        
+        if(B.length==0){
+            if(A.length%2==1){return (double)A[A.length/2];}
+                else{
+                    return (A[A.length/2]+A[A.length/2-1])/2.0;
+                }
+        }
+        
+        
+        int length=A.length+B.length;
+        boolean ave=(length%2==0);
+        
+        int t=length/2;
+        int apoint=0;
+        int bpoint=0;
+        int ret=0;
+        //linear time complexity merge
+        while(t>0){
+            if(apoint>=A.length){ret=B[bpoint];bpoint++;}
+            else if(bpoint>=B.length){ret=A[apoint];apoint++;}
+            
+           else if(A[apoint]>B[bpoint] ){ret=B[bpoint];bpoint++;}
+            else{ret=A[apoint];apoint++;}
+            t--;
+        }
+        
+        int ret2=0;
+        if(apoint>=A.length){ret2=B[bpoint];bpoint++;}
+            else if(bpoint>=B.length){ret2=A[apoint];apoint++;}
+            
+           else if(A[apoint]>B[bpoint] ){ret2=B[bpoint];bpoint++;}
+            else{ret2=A[apoint];apoint++;}
+        
+        
+        
+        
+        if(!ave){
+            
+            return (double) ret2;
+        }
+        
+        return (ret+ret2)/2.0;
+    }
+    */
+    
+    //O(log(m+n)) complexity
+    //http://blog.csdn.net/fightforyourdream/article/details/17351395
+     public double findMedianSortedArrays(int A[], int B[]) {
+         int m=A.length;
+         int n=B.length;
+         if((m+n)%2==1){
+             return (double) kth(A, B, 0, m-1, (m+n)/2+1);
+         }
+        
+        
+        return (kth(A,B,0,m-1,(m+n)/2)+kth(A,B,0,m-1,(m+n)/2+1))/2.0;
+         
+     }
+     
+     
+     
+     public int kth(int A[], int B[], int low, int high, int k){
+         int m=A.length;
+         int n=B.length;
+        //if not in A then must be in B
+         if(low>high) return kth(B, A, 0, n-1, k);
+         
+         int i=(high+low)/2;
+         int j=k-i-2;
+         
+         if((j<0 ||(j<n && A[i]>=B[j])) && (j+1>=n || (j+1>=0 && A[i]<=B[j+1]) )){
+             return A[i];
+         }
+         // find the left side of A
+         else if(j<0 || (j+1<n && A[i]>B[j+1])){
+             return kth(A, B, low, i-1, k);
+             
+             
+         }
+         //find the right side of A
+         else return kth(A, B, i+1, high, k);
+         
+     }
+    
+}
