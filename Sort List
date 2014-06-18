@@ -1,0 +1,80 @@
+/**
+ * Definition for singly-linked list.
+ * class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    //use merge sort, space complexity is O(logn), can use bottom up merge sort to achieve space complexity of O(1)
+    
+    //http://blog.csdn.net/fightforyourdream/article/details/17374055
+    public ListNode sortList(ListNode head) {
+        if(head==null || head.next==null)return head;
+        
+        if(head.next.next==null){
+            if(head.val>head.next.val){
+                ListNode t=head.next;
+                head.next=null;
+                t.next=head;
+                return t;
+            }
+            return head;
+        }
+        
+        //find the mid point
+        ListNode fast=head;
+        ListNode slow=head;
+        while(fast.next!=null && fast.next.next!=null){
+            fast=fast.next.next;
+            slow=slow.next;
+        }
+        
+        //search on the left and right
+        ListNode left=head;
+        
+        ListNode right=slow.next;
+        slow.next=null;
+        
+        left=sortList(left);
+        right=sortList(right);
+        
+        //merge
+        if(left==null)return right;
+        if(right==null)return left;
+        
+        ListNode ret=null;
+        if(right.val<left.val){ret=right;right=right.next;}
+       else{
+           ret=left; left=left.next;
+       }
+       ListNode trav=ret;
+        
+        while(left!=null || right!=null){
+            if(left==null){
+                trav.next=right;
+                break;
+            }
+            else if(right==null){
+                trav.next=left;
+                break;
+            }
+            else if(right.val<left.val){
+                trav.next=right;
+                trav=trav.next;
+                right=right.next;
+            }
+            else{
+                trav.next=left;
+                trav=trav.next;
+                left=left.next;
+            }
+        }
+        
+      return ret;  
+    }
+}
