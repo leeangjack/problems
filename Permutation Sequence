@@ -1,0 +1,52 @@
+public class Solution {
+    public String getPermutation(int n, int k) {
+        if(n==1)return "1";
+        if(n==2){
+            if(k==1)return "12";
+            return "21";
+        }
+        LinkedList<Integer> list=new LinkedList<Integer>();
+        int[] fact=new int[n-1];
+        fact[0]=1;
+        //a table of necessary factorials
+        for(int i=2;i<=n-1;i++){
+            fact[i-1]=i*fact[i-2];
+            
+        }
+        //build a list of digits for appending
+        for(int i=1;i<=n;i++){
+            list.add(i);
+        }
+        StringBuilder sb=new StringBuilder();
+        int c=n-2;
+        int s=k;
+        
+        
+        //use combinitorics and counting, append appropriate digits from the list, and then remove the digits
+        
+        while(sb.length()<n-2){
+            //find which digit to add
+            int t=(int)Math.ceil((double)s/(fact[c]));
+            int temp=list.remove((int)(t-1));
+            sb.append(temp);
+            //update kth ranking by substracting the sample space
+            s-=(fact[c]*(t-1));
+            c--;
+            
+        }
+        
+        if(k%2==0){
+            sb.append(list.pollLast());
+            sb.append(list.pollFirst());
+        }
+        else{
+            sb.append(list.pollFirst());
+            sb.append(list.pollLast());
+            
+        }
+        
+        return sb.toString();
+    }
+    
+    //similar idea but neater code http://blog.csdn.net/fightforyourdream/article/details/17483553
+}
