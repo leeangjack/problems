@@ -1,0 +1,26 @@
+public class Solution {
+    
+    public String strStr(String haystack, String needle) {
+     if(needle.equals(""))return haystack;
+     String t=null;
+     if(haystack.equals("") || (haystack.length()<needle.length()))return t;
+     
+     int hLength=haystack.length();
+     int nLength=needle.length();
+     for(int i=0;i<=hLength-nLength;i++){
+         if(haystack.charAt(i)==needle.charAt(0)){
+             if(helper(haystack, needle, i, i+nLength-1))return haystack.substring(i);
+         }
+     }
+     return t;
+    }
+    //check if a needle is found
+    public boolean helper(String a, String b, int start, int end){
+        for(int i=start;i<=end;i++){
+            if(a.charAt(i)!=b.charAt(i-start))return false;
+        }
+        return true;
+    } 
+    
+    //KMP Algorithm gives O(m+n) time complexity
+}
