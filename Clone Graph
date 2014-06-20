@@ -1,0 +1,45 @@
+
+
+//another solution used BFS or DFS http://blog.csdn.net/fightforyourdream/article/details/17497883
+//my algorithm is recursively calling of nodes if no such node, if there is such node, add to the neighbor list.
+
+
+/**
+ * Definition for undirected graph.
+ * class UndirectedGraphNode {
+ *     int label;
+ *     List<UndirectedGraphNode> neighbors;
+ *     UndirectedGraphNode(int x) { label = x; neighbors = new ArrayList<UndirectedGraphNode>(); }
+ * };
+ */
+public class Solution {
+    public UndirectedGraphNode cloneGraph(UndirectedGraphNode node) {
+        if(node==null)return node;
+        //create hash map to keep an entry for each node, if a node is present, add to the neighbour list, if not, recursively call the helper function to create the node
+        HashMap<Integer, UndirectedGraphNode> set=new HashMap<Integer, UndirectedGraphNode>();
+        
+        
+        return helper(node, set);
+    }
+    
+    public UndirectedGraphNode helper(UndirectedGraphNode node, HashMap<Integer, UndirectedGraphNode> set){
+         UndirectedGraphNode n=new UndirectedGraphNode(node.label);
+         set.put(node.label,n);
+         List<UndirectedGraphNode> l=node.neighbors;
+         
+         for(int i=0;i<l.size();i++){
+            UndirectedGraphNode temp=l.get(i);
+            if(!set.containsKey(temp.label)){
+                n.neighbors.add(helper(temp,set));
+            }
+            else{
+                n.neighbors.add(set.get(temp.label));
+            }
+            
+         }
+         
+        
+         
+         return n;
+    }
+}
