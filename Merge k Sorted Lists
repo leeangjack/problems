@@ -1,0 +1,85 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode mergeKLists(List<ListNode> lists) {
+        //use a priority queue to add the next node, when a node is added, add back the next node of the added node to the queue
+        //brute force method is over time limit
+        
+        
+        ListNode dummy=new ListNode(-1);
+        
+        if(lists.size()==0)return dummy.next;
+        Comparator<ListNode> compare=new nodeCompare();
+        PriorityQueue<ListNode> q=new PriorityQueue<ListNode>(lists.size(), compare);
+        for(int i=0;i<lists.size();i++){
+            
+            if(lists.get(i)==null) continue;
+            q.add(lists.get(i));
+        }
+        
+        
+        ListNode travel=dummy;
+        while(!q.isEmpty()){
+            ListNode temp=q.remove();
+            travel.next=temp;
+            travel=travel.next;
+            if (temp.next!=null){
+                temp=temp.next;
+                q.add(temp);
+            }
+        }
+        
+        
+        return dummy.next;
+    /*    int t=-1;
+        int tVal=Integer.MAX_VALUE;
+        for(int i=0;i<lists.size();i++){
+            ListNode n=lists.get(i);
+            if(n==null)continue;
+            else{
+                if (n.val<=tVal){
+                    tVal=n.val;
+                    t=i;
+                }
+            }
+        }
+        
+        if(t==-1)return null;
+        
+        ListNode minNode=lists.get(t);
+        ListNode ret=minNode;
+        minNode=minNode.next;
+       
+        
+        ListNode next=mergeKLists(helper(lists, t, minNode));
+        
+        ret.next=next;
+        
+        
+        return ret;
+        */
+    }
+   /* public List<ListNode> helper(List<ListNode> l, int index, ListNode n){
+        l.set(index, n);
+        return l;
+    }
+    */
+    
+    
+   public class nodeCompare implements Comparator<ListNode>{
+       @Override
+       public int compare(ListNode n1, ListNode n2){
+           return n1.val-n2.val;
+       }
+   } 
+    
+}
