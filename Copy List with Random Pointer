@@ -1,0 +1,48 @@
+/**
+ * Definition for singly-linked list with a random pointer.
+ * class RandomListNode {
+ *     int label;
+ *     RandomListNode next, random;
+ *     RandomListNode(int x) { this.label = x; }
+ * };
+ */
+public class Solution {
+    public RandomListNode copyRandomList(RandomListNode head) {
+        
+        //use a hashmap to keep track of present nodes, if present just use the node, if not, make recursive call to make it
+        
+        //another way of not using hashmap, http://blog.csdn.net/fightforyourdream/article/details/16879561
+        
+        HashMap<Integer, RandomListNode> map=new HashMap<Integer, RandomListNode>();
+        return helper(head, map);
+    }
+    
+    
+    public RandomListNode helper(RandomListNode n, HashMap<Integer, RandomListNode> map){
+        if(n==null)return null;
+        RandomListNode t=new RandomListNode(n.label);
+        map.put(n.label, t);
+        RandomListNode nNext=n.next;
+        if(nNext==null) t.next=null;
+        else if(map.containsKey(nNext.label)){
+            t.next=map.get(nNext.label);
+        }
+        else{
+            
+            t.next=helper(nNext, map);
+        }
+        
+        RandomListNode nRand=n.random;
+        if(nRand==null){
+            t.random=null;
+        }
+        else if(map.containsKey(nRand.label)){
+            t.random=map.get(nRand.label);
+        }
+        else{
+            t.random=helper(nRand,map);
+        }
+        
+        return t;
+    }
+}
