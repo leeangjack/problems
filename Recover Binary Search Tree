@@ -1,0 +1,49 @@
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+
+//a neater solution than mine is http://blog.csdn.net/fightforyourdream/article/details/16875941
+public class Solution {
+    public void recoverTree(TreeNode root) {
+        if(root==null)return;
+        //keep track of the two misplaced nodes
+        ArrayList<TreeNode> l=new ArrayList<TreeNode>();
+        //value of the previous nodes
+        int[] a=new int[1];
+        a[0]=Integer.MIN_VALUE;
+        TreeNode prev=null;
+        helper(root, prev, a, l);
+        
+        //exchange the value of the two nodes
+        TreeNode t1=l.get(0);
+        TreeNode t2=l.get(l.size()-1);
+        int t=t1.val;
+        t1.val=t2.val;
+        t2.val=t;
+        
+        return;
+        
+        
+    }
+    
+    
+    public TreeNode helper(TreeNode n, TreeNode prev, int[] a, ArrayList<TreeNode> set){
+        if(n.left!=null) prev=helper(n.left, prev, a, set);
+        if(n.val<a[0]){
+            set.add(prev);
+            set.add(n);
+            
+        }
+        a[0]=n.val;
+        prev=n;
+        if(n.right!=null) prev=helper(n.right, prev, a, set);
+        
+        return prev;
+    }
+}
