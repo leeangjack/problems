@@ -1,0 +1,61 @@
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head==null || head.next==null)return head;
+        ListNode unsort=head.next;
+        ListNode sorted=head;
+        
+        //break up sorted and unsorted
+        sorted.next=null;
+        
+        //create a dummy head node
+        ListNode dummy=new ListNode(-1);
+        
+        dummy.next=sorted;
+        
+        return helper(dummy, unsort).next;
+        
+        
+    }
+    
+    public ListNode helper(ListNode sorted, ListNode unsort){
+        //break up the single node to be inserted with the rest of the unsorted node
+        ListNode nextUnsort=unsort.next;
+        unsort.next=null;
+        //use two pointers to travel through the sorted list
+        ListNode travelOne=sorted;
+        ListNode travelTwo=sorted.next;
+        while(true){
+           //if at the end of the list, append the unsorted node to the end
+           if(travelTwo==null){
+               travelOne.next=unsort;
+               break;
+           }
+           // if a suitable position is found, insert
+            else if(travelTwo.val>=unsort.val){
+                travelOne.next=unsort;
+                unsort.next=travelTwo;
+                break;
+            }
+            else{
+                travelOne=travelOne.next;
+                travelTwo=travelTwo.next;
+            }
+        }
+        
+        //recursively insert the rest of the unsorted node
+        if(nextUnsort==null)return sorted;
+        
+        return helper(sorted, nextUnsort);
+    }
+}
