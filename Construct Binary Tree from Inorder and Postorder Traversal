@@ -1,0 +1,46 @@
+// same idea but neater code http://blog.csdn.net/fightforyourdream/article/details/16916173
+/**
+ * Definition for binary tree
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+public class Solution {
+    public TreeNode buildTree(int[] inorder, int[] postorder) {
+        int l=inorder.length;
+        
+        return helper(inorder, postorder, 0, l-1, l);
+    }
+    public TreeNode helper(int[] inorder, int[] postorder, int inStart, int posStart, int length){
+        if(length<=0)return null;
+        int t=postorder[posStart];
+        if(length==1){
+            TreeNode n=new TreeNode(t);
+            return n;
+        }
+        
+        int nextLeftEnd=0;
+        //find the position of the middle node in inorder
+        for(int i=inStart; i<=inStart+length-1;i++){
+            if(inorder[i]==t){
+                nextLeftEnd=i-1;
+                break;
+            }
+        }
+        //find the length of array to make left node and right node
+        int nextLeftLength=nextLeftEnd-inStart+1;
+        int nextRightLength=((inStart+length-1)-(nextLeftEnd+2)+1);
+        
+        TreeNode ret=new TreeNode(t);
+        //recursively make left node and right node
+        ret.left=helper(inorder, postorder, inStart, posStart-(1+nextRightLength), nextLeftLength);
+        ret.right=helper(inorder, postorder, nextLeftEnd+2, posStart-1, nextRightLength);
+        
+        return ret;
+        
+        
+    }
+}
