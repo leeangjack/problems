@@ -1,0 +1,50 @@
+public class Solution {
+   //this method modifies the original data, for a bettr solution, us DP with a one dimensional array
+    
+    /*public int minimumTotal(List<List<Integer>> triangle) {
+        if(triangle==null || triangle.size()==0 || (triangle.size()==1 && triangle.get(0)==null))return 0;
+        for(int i=triangle.size()-1;i>0;i--){
+            List<Integer> l=triangle.get(i);
+            for(int j=1;j<l.size();j++){
+                if(l.get(j)>l.get(j-1)){
+                    List<Integer> preL=triangle.get(i-1);
+                    int temp=preL.get(j-1);
+                    triangle.get(i-1).set(j-1, temp+l.get(j-1));
+                }
+                else{
+                    List<Integer> preL=triangle.get(i-1);
+                    int temp=preL.get(j-1);
+                    triangle.get(i-1).set(j-1, temp+l.get(j));
+                }
+            }
+        }
+        
+        
+        return triangle.get(0).get(0);
+    } */
+    
+   
+   //DP with only O(n) space
+   public int minimumTotal(List<List<Integer>> triangle) {
+               if(triangle==null || triangle.size()==0 || (triangle.size()==1 && triangle.get(0)==null))return 0;
+    
+    int[] ret=new int[triangle.size()];
+    
+    for(int i=0;i<triangle.size();i++){
+        ret[i]=triangle.get(triangle.size()-1).get(i);
+    }
+    
+    
+    for(int i=triangle.size()-2;i>=0;i--){
+       List<Integer> l=triangle.get(i);
+        for(int j=0;j<l.size();j++){
+            ret[j]=Math.min(ret[j], ret[j+1])+l.get(j);
+        }
+    }
+
+  return ret[0];
+       
+   } 
+    
+    
+}
